@@ -126,7 +126,8 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
         ds["svp_24"] = ETLook.meteo.saturated_vapour_pressure_average(ds["svp_24_max"], ds["svp_24_min"])
 
     ds["vpd_24"] = ETLook.meteo.vapour_pressure_deficit_daily(ds["svp_24"], ds["vp_24"])
-    ds["stress_vpd"] = ETLook.stress.stress_vpd(ds["vpd_24"], ds["vpd_slope"])
+    #ds["stress_vpd"] = ETLook.stress.stress_vpd(ds["vpd_24"], ds["vpd_slope"])
+    ds["stress_vpd"] = ETLook.stress.stress_vpd(ds["vpd_24"])
     #ds["stress_temp"] = ETLook.stress.stress_temperature(ds["t_air_24"], t_opt = ds["t_opt"], t_min = ds["t_min"], t_max = ds["t_max"])
     ds["stress_temp"] = ETLook.stress.stress_temperature(ds["t_air_24"])
 
