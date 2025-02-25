@@ -96,24 +96,28 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
 
     ds["ra_toa_flat_24"] = ETLook.solar_radiation.daily_solar_radiation_toa_flat(ds["decl"], ds["iesd"], ds["lat_rad"], ds["ws"])
 
-    if ds["slope"].dtype == object or ds["aspect"].dtype == object:
-        ds["ra_24"] = ds["ra_flat_24"]
-        ds["trans_24"] = ETLook.solar_radiation.transmissivity(ds["ra_flat_24"], ds["ra_toa_flat_24"])
-    else:
-        ds["sc"] = ETLook.solar_radiation.seasonal_correction(ds["doy"])
-        ds["ra_toa_24"] = ETLook.solar_radiation.daily_solar_radiation_toa(ds["sc"], ds["decl"], ds["iesd"], ds["lat_rad"], ds["slope"], ds["aspect"])
-        ds["trans_24"] = ETLook.solar_radiation.transmissivity(ds["ra_flat_24"], ds["ra_toa_flat_24"])
-        ds["diffusion_index"] = ETLook.solar_radiation.diffusion_index(ds["trans_24"], diffusion_slope = ds["diffusion_slope"], diffusion_intercept = ds["diffusion_intercept"])
-        ds["ra_24"] = ETLook.solar_radiation.daily_total_solar_radiation(ds["ra_toa_24"], ds["ra_toa_flat_24"], ds["diffusion_index"], ds["trans_24"])
+    # ra_24 is already calculated
+    ds["trans_24"] = ETLook.solar_radiation.transmissivity(ds["ra_flat_24"], ds["ra_toa_flat_24"])
+    #if ds["slope"].dtype == object or ds["aspect"].dtype == object:
+    #    ds["ra_24"] = ds["ra_flat_24"]
+    #    ds["trans_24"] = ETLook.solar_radiation.transmissivity(ds["ra_flat_24"], ds["ra_toa_flat_24"])
+    #else:
+    #    ds["sc"] = ETLook.solar_radiation.seasonal_correction(ds["doy"])
+    #    ds["ra_toa_24"] = ETLook.solar_radiation.daily_solar_radiation_toa(ds["sc"], ds["decl"], ds["iesd"], ds["lat_rad"], ds["slope"], ds["aspect"])
+    #    ds["trans_24"] = ETLook.solar_radiation.transmissivity(ds["ra_flat_24"], ds["ra_toa_flat_24"])
+    #    ds["diffusion_index"] = ETLook.solar_radiation.diffusion_index(ds["trans_24"], diffusion_slope = ds["diffusion_slope"], diffusion_intercept = ds["diffusion_intercept"])
+    #    ds["ra_24"] = ETLook.solar_radiation.daily_total_solar_radiation(ds["ra_toa_24"], ds["ra_toa_flat_24"], ds["diffusion_index"], ds["trans_24"])
 
     ds["stress_rad"] = ETLook.stress.stress_radiation(ds["ra_24"])
-    ds["p_air_0_24_mbar"] = ETLook.meteo.air_pressure_kpa2mbar(ds["p_air_0_24"])
-    ds["p_air_24"] = ETLook.meteo.air_pressure_daily(ds["z"], ds["p_air_0_24_mbar"])
+    # p_air_24 is already in mbar and adjusted for elevation
+    #ds["p_air_0_24_mbar"] = ETLook.meteo.air_pressure_kpa2mbar(ds["p_air_0_24"])
+    #ds["p_air_24"] = ETLook.meteo.air_pressure_daily(ds["z"], ds["p_air_0_24_mbar"])
 
-    if ds["vp_24"].dtype == object:
-        ds["vp_24"] = ETLook.meteo.vapour_pressure_from_specific_humidity_daily(ds["qv_24"], ds["p_air_24"])
-    if ds["vp_24"].dtype == object:
-        ds["vp_24"] = ETLook.meteo.vapour_pressure_from_dewpoint_daily(ds["t_dew_24"])
+    # vp_24 is already calculated
+    #if ds["vp_24"].dtype == object:
+    #    ds["vp_24"] = ETLook.meteo.vapour_pressure_from_specific_humidity_daily(ds["qv_24"], ds["p_air_24"])
+    #if ds["vp_24"].dtype == object:
+    #    ds["vp_24"] = ETLook.meteo.vapour_pressure_from_dewpoint_daily(ds["t_dew_24"])
 
     if et_look_version == "v2":
         ds["svp_24"] = ETLook.meteo.saturated_vapour_pressure(ds["t_air_24"])
@@ -153,8 +157,8 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
         log.info(f"--> Setting `z_oro` to `0.001`.")
         # ds["z_oro"] = ETLook.roughness.orographic_roughness(ds["z"], ds["x"], ds["y"])
 
+    # z_obst is already calculated for herbaceous and tree vegetation
     #ds["z_obst"] = ETLook.roughness.obstacle_height(ds["ndvi"], ds["z_obst_max"], ndvi_obs_min = ds["ndvi_obs_min"], ndvi_obs_max = ds["ndvi_obs_max"], obs_fr = ds["obs_fr"])
-    ds["z_obst"] = ETLook.roughness.obstacle_height(ds["ndvi"], ds["z_obst_max"])
     ds["z0m"] = ETLook.roughness.roughness_length(ds["lai"], ds["z_oro"], ds["z_obst"], ds["z_obst_max"], ds["land_mask"])
     if ds["u_24"].dtype == object:
         ds["u_24"] = ETLook.meteo.wind_speed(ds["u2m_24"], ds["v2m_24"])

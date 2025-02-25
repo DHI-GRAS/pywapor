@@ -116,17 +116,17 @@ def main(input_data, se_root_version = "v2", export_vars = "default", chunks = {
     ds["decl"] = ETLook.solar_radiation.declination(ds["doy"])
     ds["day_angle"] = ETLook.clear_sky_radiation.day_angle(ds["doy"])
 
-    ds["p_air_i"] = ETLook.meteo.air_pressure_kpa2mbar(ds["p_air_i"])
-    ds["p_air_0_i"] = ETLook.meteo.air_pressure_kpa2mbar(ds["p_air_0_i"])
+    #ds["p_air_i"] = ETLook.meteo.air_pressure_kpa2mbar(ds["p_air_i"])
+    #ds["p_air_0_i"] = ETLook.meteo.air_pressure_kpa2mbar(ds["p_air_0_i"])
 
     #ds["vc"] = ETLook.leaf.vegetation_cover(ds["ndvi"], nd_min = ds["nd_min"], nd_max = ds["nd_max"], vc_pow = ds["vc_pow"])
-    ds["vc"] = ETLook.leaf.vegetation_cover(ds["ndvi"])
+    #ds["vc"] = ETLook.leaf.vegetation_cover(ds["ndvi"])
 
     ds["t_air_k_i"] = ETLook.meteo.air_temperature_kelvin_inst(ds["t_air_i"])
 
-    ds["vp_i"] = ETLook.meteo.vapour_pressure_from_specific_humidity_inst(ds["qv_i"], ds["p_air_i"])
-    if ds["vp_i"].dtype == object:
-        ds["vp_i"] = ETLook.meteo.vapour_pressure_from_dewpoint_inst(ds["t_dew_i"])
+    #ds["vp_i"] = ETLook.meteo.vapour_pressure_from_specific_humidity_inst(ds["qv_i"], ds["p_air_i"])
+    #if ds["vp_i"].dtype == object:
+    #    ds["vp_i"] = ETLook.meteo.vapour_pressure_from_dewpoint_inst(ds["t_dew_i"])
 
     ds["qv_i"] = ETLook.meteo.specific_humidity_from_vapour_pressure(ds["vp_i"], ds["p_air_i"])
 
