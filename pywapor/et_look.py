@@ -127,10 +127,9 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
         ds["svp_24"] = ETLook.meteo.saturated_vapour_pressure_average(ds["svp_24_max"], ds["svp_24_min"])
 
     ds["vpd_24"] = ETLook.meteo.vapour_pressure_deficit_daily(ds["svp_24"], ds["vp_24"])
-    #ds["stress_vpd"] = ETLook.stress.stress_vpd(ds["vpd_24"], ds["vpd_slope"])
-    ds["stress_vpd"] = ETLook.stress.stress_vpd(ds["vpd_24"])
+    ds["stress_vpd"] = ETLook.stress.stress_vpd(ds["vpd_24"], ds["vpd_slope"])
     #ds["stress_temp"] = ETLook.stress.stress_temperature(ds["t_air_24"], t_opt = ds["t_opt"], t_min = ds["t_min"], t_max = ds["t_max"])
-    ds["stress_temp"] = ETLook.stress.stress_temperature(ds["t_air_24"])
+    ds["stress_temp"] = ETLook.stress.stress_temperature(ds["t_air_24"], t_opt = ds["t_opt"])
 
     #ds["r_canopy_0"] = ETLook.resistance.atmospheric_canopy_resistance(ds["lai_eff"], ds["stress_rad"], ds["stress_vpd"], ds["stress_temp"], rs_min = ds["rs_min"], rcan_max = ds["rcan_max"])
     ds["r_canopy_0"] = ETLook.resistance.atmospheric_canopy_resistance(ds["lai_eff"], ds["stress_rad"], ds["stress_vpd"], ds["stress_temp"])
@@ -138,7 +137,7 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
     # **net radiation canopy******************************************************
     ds["t_air_k_24"] = ETLook.meteo.air_temperature_kelvin_daily(ds["t_air_24"])
     #ds["l_net"] = ETLook.radiation.longwave_radiation_fao(ds["t_air_k_24"], ds["vp_24"], ds["trans_24"], vp_slope = ds["vp_slope"], vp_offset = ds["vp_offset"], lw_slope = ds["lw_slope"], lw_offset = ds["lw_offset"])
-    ds["l_net"] = ETLook.radiation.longwave_radiation_fao(ds["t_air_k_24"], ds["vp_24"], ds["trans_24"])
+    ds["l_net"] = ETLook.radiation.longwave_radiation_fao(ds["t_air_k_24"], ds["vp_24"], ds["trans_24"], lw_slope = ds["lw_slope"], lw_offset = ds["lw_offset"])
     #ds["int_mm"] = ETLook.evapotranspiration.interception_mm(ds["p_24"], ds["vc"], ds["lai"], int_max = ds["int_max"])
     ds["int_mm"] = ETLook.evapotranspiration.interception_mm(ds["p_24"], ds["vc"], ds["lai"])
     ds["lh_24"] = ETLook.meteo.latent_heat_daily(ds["t_air_24"])
@@ -210,8 +209,7 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
 
     ds["dd"] = ETLook.radiation.damping_depth(ds["stc"], ds["vhc"])
     ds["g0_bs"] = ETLook.radiation.bare_soil_heat_flux(ds["doy"], ds["dd"], ds["stc"], ds["t_amp"], ds["lat_rad"])
-    #ds["g0_24"] = ETLook.radiation.soil_heat_flux(ds["g0_bs"], ds["sf_soil"], ds["land_mask"], ds["rn_24_soil"], ds["trans_24"], ds["ra_24"], ds["l_net"], ds["rn_slope"], ds["rn_offset"])
-    ds["g0_24"] = ETLook.radiation.soil_heat_flux(ds["g0_bs"], ds["sf_soil"], ds["land_mask"], ds["rn_24_soil"], ds["trans_24"], ds["ra_24"], ds["l_net"])
+    ds["g0_24"] = ETLook.radiation.soil_heat_flux(ds["g0_bs"], ds["sf_soil"], ds["land_mask"], ds["rn_24_soil"], ds["trans_24"], ds["ra_24"], ds["l_net"], ds["rn_slope"], ds["rn_offset"])
     ds["e_24_init"] = ETLook.neutral.initial_daily_evaporation(ds["rn_24_soil"], ds["g0_24"], ds["ssvp_24"], ds["ad_24"], ds["vpd_24"], ds["psy_24"], ds["r_soil"], ds["ra_soil_init"])
     ds["h_soil_24_init"] = ETLook.unstable.initial_sensible_heat_flux_soil_daily(ds["rn_24_soil"], ds["e_24_init"], ds["g0_24"])
 
