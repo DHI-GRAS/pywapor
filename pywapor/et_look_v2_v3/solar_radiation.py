@@ -10,14 +10,14 @@ def longitude_rad(lon_deg):
     Parameters
     ----------
     lon_deg : float
-        longitude in degrees, 
+        longitude in degrees,
         :math:`\phi`
         [deg]
 
     Returns
     -------
     lon : float
-        longitude, 
+        longitude,
         :math:`\phi`
         [rad]
 
@@ -32,14 +32,14 @@ def latitude_rad(lat_deg):
     Parameters
     ----------
     lat_deg : float
-        latitude in degrees, 
+        latitude in degrees,
         :math:`\lambda`
         [deg]
 
     Returns
     -------
     lat : float
-        latitude, 
+        latitude,
         :math:`\lambda`
         [rad]
 
@@ -54,14 +54,14 @@ def slope_rad(slope_deg):
     Parameters
     ----------
     slope_deg : float
-        slope in degrees, 
+        slope in degrees,
         :math:`s`
         [deg]
 
     Returns
     -------
     slope : float
-        slope, 
+        slope,
         :math:`\Delta`
         [rad]
 
@@ -76,14 +76,14 @@ def aspect_rad(aspect_deg):
     Parameters
     ----------
     aspect_deg : float
-        aspect in degrees, 
+        aspect in degrees,
         :math:`s`
         [deg]
 
     Returns
     -------
     aspect : float
-        aspect (0 is north; pi is south), 
+        aspect (0 is north; pi is south),
         :math:`\alpha`
         [rad]
     """
@@ -102,14 +102,14 @@ def declination(doy):
     Parameters
     ----------
     doy : float
-        julian day of the year, 
+        julian day of the year,
         :math:`J`
         [-]
 
     Returns
     -------
     decl : float
-        declination, 
+        declination,
         :math:`\delta`
         [rad]
 
@@ -133,14 +133,14 @@ def earth_sun_distance(doy):
     Parameters
     ----------
     doy : float
-        julian day of the year, 
+        julian day of the year,
         :math:`J`
         [-]
 
     Returns
     -------
     ed : float
-        earth sun distance, 
+        earth sun distance,
         :math:`d_{r}`
         [AU]
 
@@ -169,14 +169,14 @@ def inverse_earth_sun_distance(doy):
     Parameters
     ----------
     doy : float
-        julian day of the year, 
+        julian day of the year,
         :math:`J`
         [-]
 
     Returns
     -------
     iesd : float
-        inverse earth sun distance, 
+        inverse earth sun distance,
         :math:`d_{r}`
         [AU]
 
@@ -201,14 +201,14 @@ def actual_earth_sun_distance(iesd):
     Parameters
     ----------
     iesd : float
-        inverse earth sun distance, 
+        inverse earth sun distance,
         :math:`J`
         [AU]
 
     Returns
     -------
     esd : float
-        earth sun distance, 
+        earth sun distance,
         :math:`d_{r}`
         [AU]
 
@@ -237,14 +237,14 @@ def seasonal_correction(doy):
     Parameters
     ----------
     doy : float
-        julian day of the year, 
+        julian day of the year,
         :math:`J`
         [-]
 
     Returns
     -------
     sc : float
-        seasonal correction, 
+        seasonal correction,
         :math:`s_{c}`
         [hours]
 
@@ -269,23 +269,23 @@ def sunset_hour_angle(lat, decl):
     Parameters
     ----------
     decl : float
-        solar declination, 
+        solar declination,
         :math:`\delta`
         [rad]
     lat : float
-        latitude, 
+        latitude,
         :math:`\lambda`
         [rad]
 
     Returns
     -------
     ws : float
-        sunset hour angle, 
+        sunset hour angle,
         :math:`w_{s}`
         [rad]
 
     """
-    return np.arccos(-(np.tan(lat) * np.tan(decl)))
+    return np.arccos(np.clip(-(np.tan(lat) * np.tan(decl)), -1, 1))
 
 
 def hour_angle(sc, dtime, lon = 0):
@@ -300,22 +300,22 @@ def hour_angle(sc, dtime, lon = 0):
     Parameters
     ----------
     sc : float
-        seasonal correction, 
+        seasonal correction,
         :math:`s_{c}`
         [hours]
     dtime : float
-        decimal time, 
+        decimal time,
         :math:`t`
         [hours]
     lon : float
-        longitude, 
+        longitude,
         :math:`\phi`
         [rad]
 
     Returns
     -------
     ha : float
-        hour_angle, 
+        hour_angle,
         :math:`\omega`
         [rad]
 
@@ -341,18 +341,18 @@ def inst_solar_radiation_toa(csza, iesd):
     Parameters
     ----------
     csza : float
-        cosine solar zenith angle, 
+        cosine solar zenith angle,
         :math:`\phi`
         [-]
     iesd : float
-        inverse earth sun distance, 
+        inverse earth sun distance,
         :math:`d_{r}`
         [AU]
 
     Returns
     -------
     ra_i_toa : float
-        instantaneous solar radiation at top of atmosphere, 
+        instantaneous solar radiation at top of atmosphere,
         :math:`S_{toa}^{i}`
         [Wm-2]
 
@@ -382,34 +382,34 @@ def daily_solar_radiation_toa(sc, decl, iesd, lat, slope, aspect):
     Parameters
     ----------
     iesd : float
-        inverse earth sun distance, 
+        inverse earth sun distance,
         :math:`d_{r}`
         [AU]
     decl : float
-        solar declination, 
+        solar declination,
         :math:`\delta`
         [rad]
     sc : float
-        seasonal correction, 
+        seasonal correction,
         :math:`s_{c}`
         [hours]
     lat : float
-        latitude, 
+        latitude,
         :math:`\lambda`
         [rad]
     slope : float
-        slope, 
+        slope,
         :math:`\Delta`
         [rad]
     aspect : float
-        aspect (0 is north; 180 is south), 
+        aspect (0 is north; 180 is south),
         :math:`\alpha`
         [deg]
 
     Returns
     -------
     ra_24_toa : float
-        daily solar radiation at the top of atmosphere, 
+        daily solar radiation at the top of atmosphere,
         :math:`S_{toa}`
         [Wm-2]
 
@@ -461,30 +461,30 @@ def cosine_solar_zenith_angle(ha, decl, lat, slope=0, aspect_rad=0):
     Parameters
     ----------
     ha : float
-        hour angle, 
+        hour angle,
         :math:`\omega`
         [rad]
     decl : float
-        declination, 
+        declination,
         :math:`\delta`
         [rad]
     lat : float
-        latitude, 
+        latitude,
         :math:`\lambda`
         [rad]
     slope : float
-        slope, 
+        slope,
         :math:`\Delta`
         [rad]
     aspect_rad : float
-        aspect (0 is north; pi is south), 
+        aspect (0 is north; pi is south),
         :math:`\alpha`
         [rad]
 
     Returns
     -------
     csza : float
-        cosine solar zenith angle, 
+        cosine solar zenith angle,
         :math:`\phi`
         [-]
 
@@ -524,18 +524,18 @@ def transmissivity(ra_24_flat, ra_24_toa_flat):
     Parameters
     ----------
     ra_24_flat : float
-        daily solar radiation for a flat surface, 
+        daily solar radiation for a flat surface,
         :math:`S^{\downarrow}`
         [Wm-2]
     ra_24_toa_flat : float
-        daily solar radiation at the top of atmosphere for a flat surface, 
+        daily solar radiation at the top of atmosphere for a flat surface,
         :math:`S_{toa,f}`
         [Wm-2]
 
     Returns
     -------
     trans_24 : float
-        daily atmospheric transmissivity, 
+        daily atmospheric transmissivity,
         :math:`\tau`
         [-]
     """
@@ -555,26 +555,26 @@ def daily_solar_radiation_toa_flat(decl, iesd, lat, ws):
     Parameters
     ----------
     decl : float
-        solar declination, 
+        solar declination,
         :math:`\delta`
         [rad]
     iesd : float
-        inverse earth sun distance, 
+        inverse earth sun distance,
         :math:`d_{inv,r}`
         [AU]
     lat : float
-        latitude, 
+        latitude,
         :math:`\lambda`
         [rad]
     ws : float
-        sunset hour angle, 
+        sunset hour angle,
         :math:`w_{s}`
         [rad]
 
     Returns
     -------
     ra_24_toa_flat : float
-        daily solar radiation at the top of atmosphere for a flat surface, 
+        daily solar radiation at the top of atmosphere for a flat surface,
         :math:`S_{toa,f}`
         [Wm-2]
 
@@ -596,18 +596,18 @@ def daily_solar_radiation_flat(ra_24_toa_flat, trans_24):
     Parameters
     ----------
     ra_24_toa_flat : float
-        daily solar radiation at the top of atmosphere for a flat surface, 
+        daily solar radiation at the top of atmosphere for a flat surface,
         :math:`S_{toa}`
         [Wm-2]
     trans_24 : float
-        daily atmospheric transmissivity, 
+        daily atmospheric transmissivity,
         :math:`\tau`
         [-]
 
     Returns
     -------
     ra_24_flat : float
-        daily solar radiation for a flat surface, 
+        daily solar radiation for a flat surface,
         :math:`S^{\downarrow}`
         [Wm-2]
 
@@ -627,22 +627,22 @@ def diffusion_index(trans_24, diffusion_slope=-1.33, diffusion_intercept=1.15):
     Parameters
     ----------
     trans_24 : float
-        daily atmospheric transmissivity, 
+        daily atmospheric transmissivity,
         :math:`\tau`
         [-]
     diffusion_slope : float
-        slope of diffusion index vs transmissivity relationship, 
+        slope of diffusion index vs transmissivity relationship,
         :math:`b_{diff}`
         [-]
     diffusion_intercept : float
-        intercept of diffusion index vs transmissivity relationship, 
+        intercept of diffusion index vs transmissivity relationship,
         :math:`a_{diff}`
         [-]
 
     Returns
     -------
     diffusion_index : float
-        diffusion_index, 
+        diffusion_index,
         :math:`I_{diff}`
         [-]
 
@@ -666,26 +666,26 @@ def daily_total_solar_radiation(ra_24_toa, ra_24_toa_flat, diffusion_index, tran
     Parameters
     ----------
     ra_24_toa : float
-        daily solar radiation at the top of atmosphere, 
+        daily solar radiation at the top of atmosphere,
         :math:`S_{toa}`
         [Wm-2]
     ra_24_toa_flat : float
-        daily solar radiation at the top of atmosphere for a flat surface, 
+        daily solar radiation at the top of atmosphere for a flat surface,
         :math:`S_{toa,f}`
         [Wm-2]
     diffusion_index : float
-        diffusion_index, 
+        diffusion_index,
         :math:`I_{diff}`
         [-]
     trans_24 : float
-        daily atmospheric transmissivity, 
+        daily atmospheric transmissivity,
         :math:`\tau`
         [-]
 
     Returns
     -------
     ra_24 : float
-        daily solar radiation, 
+        daily solar radiation,
         :math:`S^{\downarrow}`
         [Wm-2]
 
@@ -693,4 +693,3 @@ def daily_total_solar_radiation(ra_24_toa, ra_24_toa_flat, diffusion_index, tran
     diffuse = trans_24 * ra_24_toa_flat * diffusion_index
     direct = trans_24 * ra_24_toa * (1 - diffusion_index)
     return diffuse + direct
-
