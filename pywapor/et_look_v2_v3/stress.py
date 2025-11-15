@@ -13,14 +13,14 @@ def stress_radiation(ra_24):
     Parameters
     ----------
     ra_24 : float
-        daily solar radiation, 
+        daily solar radiation,
         :math:`S^{\downarrow}`
         [Wm-2]
 
     Returns
     -------
     stress_rad : float
-        stress factor for radiation, 
+        stress factor for radiation,
         :math:`S_{r}`
         [-]
 
@@ -38,7 +38,7 @@ def stress_radiation(ra_24):
     0.90322580645161288
     """
     stress = ra_24/(ra_24 + 60.)*(1 + 60./500.)
-    
+
     if isinstance(stress, xr.DataArray):
         stress = stress.clip(0, 1)
     else:
@@ -47,7 +47,7 @@ def stress_radiation(ra_24):
     return stress
 
 
-def stress_moisture(se_root, tenacity=1.5):
+def stress_moisture(se_root, tenacity=2.0):
     r"""
     Computes the stress for plants when there is not sufficient soil
     moisture in the root zone.
@@ -74,7 +74,7 @@ def stress_moisture(se_root, tenacity=1.5):
     Returns
     -------
     stress_moist : float
-        stress factor for root zone moisture, 
+        stress factor for root zone moisture,
         :math:`S_{m}`
         [-]
 
@@ -114,26 +114,26 @@ def stress_temperature(t_air_24, t_opt=25.0, t_min=0.0, t_max=50.0):
     Parameters
     ----------
     t_air_24 : float
-        daily air temperature, 
+        daily air temperature,
         :math:`T_{a}`
         [C]
     t_opt : float
-        optimum air temperature for plant growth, 
+        optimum air temperature for plant growth,
         :math:`T_{opt}`
         [C]
     t_min : float
-        minimum air temperature for plant growth, 
+        minimum air temperature for plant growth,
         :math:`T_{min}`
         [C]
     t_max : float
-        maximum air temperature for plant growth, 
+        maximum air temperature for plant growth,
         :math:`T_{max}`
         [C]
 
     Returns
     -------
     stress_temp : float
-        stress factor for air temperature, 
+        stress factor for air temperature,
         :math:`S_{T}`
         [-]
 
@@ -178,18 +178,18 @@ def stress_vpd(vpd_24, vpd_slope=-0.3):
     Parameters
     ----------
     vpd_24 : float
-        daily vapour pressure deficit, 
+        daily vapour pressure deficit,
         :math:`\Delta_{e}`
         [mbar]
     vpd_slope : float
-        vapour pressure stress curve slope, 
+        vapour pressure stress curve slope,
         :math:`m`
         [mbar-1]
 
     Returns
     -------
     stress_vpd : float
-        stress factor for vapour pressure deficit, 
+        stress factor for vapour pressure deficit,
         :math:`S_{v}`
         [-]
 
@@ -205,7 +205,7 @@ def stress_vpd(vpd_24, vpd_slope=-0.3):
 
     """
     stress = vpd_slope * np.log(vpd_24/10. + 0.5) + 1
-    
+
     if isinstance(stress, xr.DataArray):
         stress = stress.clip(0, 1)
     else:

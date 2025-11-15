@@ -132,7 +132,7 @@ def main(input_data, et_look_version = "v2", export_vars = "default", chunks = {
     ds["stress_temp"] = ETLook.stress.stress_temperature(ds["t_air_24"], t_opt = ds["t_opt"])
 
     #ds["r_canopy_0"] = ETLook.resistance.atmospheric_canopy_resistance(ds["lai_eff"], ds["stress_rad"], ds["stress_vpd"], ds["stress_temp"], rs_min = ds["rs_min"], rcan_max = ds["rcan_max"])
-    ds["r_canopy_0"] = ETLook.resistance.atmospheric_canopy_resistance(ds["lai_eff"], ds["stress_rad"], ds["stress_vpd"], ds["stress_temp"])
+    ds["r_canopy_0"] = ETLook.resistance.atmospheric_canopy_resistance(ds["lai_eff"], ds["stress_rad"], ds["stress_vpd"], ds["stress_temp"], rs_min = ds["rs_min"])
 
     # **net radiation canopy******************************************************
     ds["t_air_k_24"] = ETLook.meteo.air_temperature_kelvin_daily(ds["t_air_24"])
